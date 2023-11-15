@@ -1,5 +1,6 @@
 #Implementation of SEP from Hutson et al. (2019)
-library(gsl)
+#library(gsl)
+library(expint)
 library(fGarch)
 library(stats)
 
@@ -31,14 +32,14 @@ sep_cdf<-function(x,theta,sigma,beta,alpha){
     if(z[i]<=0){
       gam_x<-2^((2/(beta+1))-1) * ((alpha-1)*z[i])^(2/(beta+1))
       gam_a<-((beta+1)/2)
-      num<-alpha*gamma_inc(gam_a,gam_x)
+      num<-alpha*gammainc(gam_a,gam_x)
       den<-gamma((beta+1)/2)
       y[i]<-num/den
     }
     if(z[i]>0){
       gam_x<-2^((2/(beta+1))-1)*(1/(alpha*z[i]))^(-2/(beta+1))
       gam_a<-((beta+1)/2)
-      num<-(1-alpha)*gamma_inc(gam_a,gam_x,)
+      num<-(1-alpha)*gammainc(gam_a,gam_x)
       den<-gamma((beta+1)/2)
       y[i]<-1-(num/den)
     }
@@ -68,12 +69,12 @@ sep_quant2<-function(u,theta,sigma,beta,alpha){
   q<-c()
   for(i in 1:length(u)){
     if(u[i]<=alpha){
-      num<-(2^(0.5-(1/(beta+1))) * sqrt(gamma((beta+1)/2)/gamma_inc((beta+1)/2,u[i]/alpha)))^(beta+1)
+      num<-(2^(0.5-(1/(beta+1))) * sqrt(gamma((beta+1)/2)/gammainc((beta+1)/2,u[i]/alpha)))^(beta+1)
       den<-1-alpha
       q[i]<-theta - sigma*(num/den)
     }
     if(u[i]>alpha){
-      num<-(2^((1/(beta+1))-0.5) / sqrt(gamma((beta+1)/2)/gamma_inc((beta+1)/2,(1-u[i])/(1-alpha))))^(-(beta+1))
+      num<-(2^((1/(beta+1))-0.5) / sqrt(gamma((beta+1)/2)/gammainc((beta+1)/2,(1-u[i])/(1-alpha))))^(-(beta+1))
       den<-alpha
       q[i]<-theta + sigma*(num/den)
     }

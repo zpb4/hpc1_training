@@ -1,4 +1,4 @@
-setwd('h:/Projects/MA SWM collaboration - Phase 2/logratio_experimentation/')
+#setwd('h:/Projects/MA SWM collaboration - Phase 2/logratio_experimentation/')
 source('sep_function.R')
 library(fGarch)
 
@@ -69,12 +69,15 @@ alpha<-sep_fit$par[4]
 #3) Compare generated SGED vs fitted SEP distributions
 
 #histogram comparison between R SGED sample (x) and fitted SEP pdf (red line)
+png('histogram-comparison.png',width=512,height=256)
 par(mfrow=c(1,2))
 hist(x,breaks=c(-100,seq(-5,5,0.1),100),freq=FALSE,xlim=c(-5,5), main='SGED v SEP pdf',xlab='')
 lines(seq(-5,5,0.01),sep_pdf(seq(-5,5,0.01),theta,sigma,beta,alpha),col='red')
 
 hist(sep_samp(samps,theta,sigma,beta,alpha),breaks=c(-100,seq(-5,5,0.1),100),freq=FALSE,xlim=c(-5,5),col='yellow', main='SEP samples v SEP pdf',xlab='')
 lines(seq(-5,5,0.01),sep_pdf(seq(-5,5,0.01),theta,sigma,beta,alpha),col='red')
+
+dev.off()
 
 #check that cdf and quantile functions behave appropriately
 F<-sep_cdf(sort(x),theta,sigma,beta,alpha)
@@ -84,12 +87,15 @@ hist(Q,breaks=c(-100,seq(-5,5,0.1),100),freq=FALSE,xlim=c(-5,5), main='SEP cdf-q
 lines(seq(-5,5,0.01),sep_pdf(seq(-5,5,0.01),theta,sigma,beta,alpha),col='red')
           
 #P-P plot
+png('P-P_plot.png')
 par(mfrow=c(1,1))
 emp_cdf<-rank(sort(x))/(length(x)+1)
 est_cdf<-sep_cdf(sort(x),theta,sigma,beta,alpha)
 
 plot(est_cdf,emp_cdf,xlim=c(0,1),ylim=c(0,1))
 abline(0,1,col='gray')
+
+dev.off()
 
 
 #####################################END####################################
