@@ -155,4 +155,23 @@ sep_mle_sigest<-function(x,pars){
   return(ll)
 }
 
+SEPfit<-function(x){
+  #optimization constraints for theta, sigma, beta, alpha params
+  par_upr<-c(5,10,10,1)
+  par_est<-c(0,1,0,0.5)
+  par_lwr<-c(-5,0,-1,0)
+  
+  sep_fit<-optim(par=par_est,sep_mle,x=x,
+                 method = 'L-BFGS-B',lower = par_lwr,upper = par_upr,
+                 control = list(fnscale=-1,maxit=100000))
+  
+  theta<-sep_fit$par[1]
+  sigma<-sep_fit$par[2]
+  beta<-sep_fit$par[3]
+  alpha<-sep_fit$par[4]
+  param_out<-c(theta,sigma,beta,alpha)
+  names(param_out)<-c('theta','sigma','beta','alpha')
+  return(param_out)
+}
+
 ######################################END##################################

@@ -14,7 +14,7 @@ sigma=0.5
 beta=1
 alpha=0.6
 
-plot_out=True
+plot_out=False
 
 #plotting inputs
 bins=np.linspace(-100,100,1000)
