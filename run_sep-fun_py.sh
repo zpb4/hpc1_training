@@ -12,7 +12,7 @@ SLURM="#!/bin/bash\n\
 
 source ~/py-env/bin/activate\n\
 
-python3 sep_function.py"
+python3 sep_experimentation.py"
 
 echo -e $SLURM | sbatch
 sleep 0.5
